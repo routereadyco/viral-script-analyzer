@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Viral Script Analyzer — See Why Any Video Works (Free)</title>
+<meta name="description" content="Paste a video's script or transcript and get an instant breakdown of hook style, pattern interrupts, CTA placement, and structure. Free AI tool for content creators and marketers.">
+<link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎬</text></svg>">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Viral Script Analyzer",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Web",
+  "description": "Free AI tool that breaks down a video script's hook style, pattern interrupts, CTA placement, structure, and pacing from its transcript.",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        colors: {
+          brand: { 50:'#eef2ff',100:'#e0e7ff',500:'#6366f1',600:'#4f46e5',700:'#4338ca',900:'#312e81' }
+        },
+        fontFamily: { sans: ['-apple-system','BlinkMacSystemFont','Segoe UI','Inter','Roboto','sans-serif'] }
+      }
+    }
+  }
+</script>
+<style>
+  @keyframes fadeUp { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform: translateY(0); } }
+  .fade-up { animation: fadeUp .35s ease-out both; }
+  .fade-up-1 { animation-delay: .05s; }
+  .fade-up-2 { animation-delay: .12s; }
+  .fade-up-3 { animation-delay: .19s; }
+  .fade-up-4 { animation-delay: .26s; }
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 8px; }
+</style>
+</head>
+<body class="bg-slate-50 text-slate-900 antialiased min-h-screen flex flex-col">
+
+<header class="border-b border-slate-200 bg-white/80 backdrop-blur sticky top-0 z-30">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 py-4 flex items-center justify-between">
+    <div class="flex items-center gap-2">
+      <span class="text-xl">🎬</span>
+      <span class="font-semibold tracking-tight">Viral Script Analyzer</span>
+    </div>
+    <a href="#faq" class="text-sm text-slate-500 hover:text-slate-900 transition hidden sm:block">FAQ</a>
+  </div>
+</header>
+
+<main class="flex-1">
+
+  <section class="max-w-5xl mx-auto px-4 sm:px-6 pt-12 sm:pt-16 pb-10">
+    <div class="max-w-2xl">
+      <p class="inline-flex items-center gap-1.5 text-xs font-medium text-brand-700 bg-brand-50 border border-brand-100 rounded-full px-3 py-1 mb-5">
+        <span class="w-1.5 h-1.5 rounded-full bg-brand-500"></span> Free — one analysis per visit
+      </p>
+      <h1 class="text-3xl sm:text-4xl font-bold tracking-tight text-slate-900 leading-tight">
+        Paste a viral video's script. See exactly why it works.
+      </h1>
+      <p class="mt-2 text-xs text-slate-400">Works from a transcript or script — we don't fetch or watch the video itself.</p>
+      <p class="mt-3 text-slate-600 text-base sm:text-lg">
+        Instant breakdown of hook style, pattern interrupts, CTA placement, and structure — in under 30 seconds.
+      </p>
+    </div>
+
+    <div id="form-card" class="mt-8 bg-white border border-slate-200 rounded-2xl shadow-sm p-5 sm:p-7">
+      <form id="analyze-form" class="space-y-4">
+        <div>
+          <label for="videoUrl" class="block text-sm font-medium text-slate-700 mb-1.5">
+            Video link <span class="text-slate-400 font-normal">(optional, for context)</span>
+          </label>
+          <input
+            id="videoUrl" type="url" placeholder="https://youtube.com/watch?v=..."
+            class="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition"
+          >
+        </div>
+        <div>
+          <label for="transcript" class="block text-sm font-medium text-slate-700 mb-1.5">
+            Transcript or opening lines <span class="text-rose-500">*</span>
+          </label>
+          <textarea
+            id="transcript" rows="6" required
+            placeholder="Paste the video's captions, transcript, or the first ~100 words spoken. (TikTok/YouTube auto-captions work great — just copy them in.)"
+            class="w-full rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition resize-y"
+          ></textarea>
+          <p id="input-error" class="hidden mt-1.5 text-sm text-rose-600"></p>
+        </div>
+        <button
+          type="submit" id="submit-btn"
+          class="w-full sm:w-auto inline-flex items-center justify-center gap-2 bg-brand-600 hover:bg-brand-700 text-white font-medium text-sm px-6 py-3 rounded-lg transition shadow-sm hover:shadow disabled:opacity-60 disabled:cursor-not-allowed"
+        >
+          <span id="btn-text">Analyze This Video — Free</span>
+        </button>
+      </form>
+    </div>
+  </section>
+
+  <section class="max-w-5xl mx-auto px-4 sm:px-6 pb-14" id="how">
+    <div class="grid sm:grid-cols-3 gap-5">
+      <div class="flex items-start gap-3">
+        <div class="shrink-0 w-8 h-8 rounded-full bg-brand-50 text-brand-700 flex items-center justify-center text-sm font-semibold">1</div>
+        <div><p class="font-medium text-sm text-slate-900">Paste the script</p><p class="text-sm text-slate-500 mt-0.5">Transcript, captions, or just the hook.</p></div>
+      </div>
+      <div class="flex items-start gap-3">
+        <div class="shrink-0 w-8 h-8 rounded-full bg-brand-50 text-brand-700 flex items-center justify-center text-sm font-semibold">2</div>
+        <div><p class="font-medium text-sm text-slate-900">We break it down</p><p class="text-sm text-slate-500 mt-0.5">Hook, structure, CTA, pacing — mapped out.</p></div>
+      </div>
+      <div class="flex items-start gap-3">
+        <div class="shrink-0 w-8 h-8 rounded-full bg-brand-50 text-brand-700 flex items-center justify-center text-sm font-semibold">3</div>
+        <div><p class="font-medium text-sm text-slate-900">You apply the pattern</p><p class="text-sm text-slate-500 mt-0.5">One clear, actionable takeaway per video.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="loading-section" class="hidden max-w-5xl mx-auto px-4 sm:px-6 pb-16">
+    <div class="bg-white border border-slate-200 rounded-2xl p-8 flex flex-col items-center text-center">
+      <svg class="animate-spin h-6 w-6 text-brand-600 mb-4" viewBox="0 0 24 24" fill="none">
+        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"></path>
+      </svg>
+      <p id="loading-status" class="text-sm text-slate-500 font-medium">Reading the hook…</p>
+    </div>
+  </section>
+
+  <section id="error-section" class="hidden max-w-5xl mx-auto px-4 sm:px-6 pb-10">
+    <div class="bg-rose-50 border border-rose-200 text-rose-700 text-sm rounded-xl p-4">
+      Something went wrong analyzing this video. Please try again in a moment.
+    </div>
+  </section>
+
+  <section id="results-section" class="hidden max-w-5xl mx-auto px-4 sm:px-6 pb-6">
+    <div class="flex items-center justify-between mb-4">
+      <h2 class="text-lg font-semibold text-slate-900">Breakdown</h2>
+      <span class="text-xs text-slate-400">Video 1 of 1 (free)</span>
+    </div>
+
+    <div class="grid sm:grid-cols-2 gap-4">
+      <div class="fade-up fade-up-1 bg-white border border-slate-200 rounded-2xl p-5">
+        <p class="text-xs font-semibold text-brand-600 uppercase tracking-wide mb-2">Hook Style</p>
+        <p id="out-hook-label" class="font-semibold text-slate-900"></p>
+        <p id="out-hook-why" class="text-sm text-slate-600 mt-1.5"></p>
+      </div>
+      <div class="fade-up fade-up-1 bg-white border border-slate-200 rounded-2xl p-5">
+        <p class="text-xs font-semibold text-brand-600 uppercase tracking-wide mb-2">CTA</p>
+        <p id="out-cta-placement" class="font-semibold text-slate-900"></p>
+        <p id="out-cta-strength" class="text-sm text-slate-600 mt-1.5"></p>
+      </div>
+      <div class="fade-up fade-up-2 bg-white border border-slate-200 rounded-2xl p-5 sm:col-span-2">
+        <p class="text-xs font-semibold text-brand-600 uppercase tracking-wide mb-3">Pattern Interrupts</p>
+        <ul id="out-interrupts" class="space-y-2.5"></ul>
+      </div>
+      <div class="fade-up fade-up-3 bg-white border border-slate-200 rounded-2xl p-5 sm:col-span-2">
+        <p class="text-xs font-semibold text-brand-600 uppercase tracking-wide mb-3">Structure</p>
+        <div class="grid sm:grid-cols-3 gap-4 text-sm">
+          <div><p class="font-medium text-slate-900 mb-1">Intro</p><p id="out-struct-intro" class="text-slate-600"></p></div>
+          <div><p class="font-medium text-slate-900 mb-1">Body</p><p id="out-struct-body" class="text-slate-600"></p></div>
+          <div><p class="font-medium text-slate-900 mb-1">Close</p><p id="out-struct-close" class="text-slate-600"></p></div>
+        </div>
+      </div>
+      <div class="fade-up fade-up-3 bg-white border border-slate-200 rounded-2xl p-5 sm:col-span-2">
+        <p class="text-xs font-semibold text-brand-600 uppercase tracking-wide mb-2">Pacing</p>
+        <p id="out-pacing" class="text-sm text-slate-600"></p>
+      </div>
+      <div class="fade-up fade-up-4 bg-brand-900 text-white rounded-2xl p-5 sm:col-span-2">
+        <p class="text-xs font-semibold text-brand-200 uppercase tracking-wide mb-2">Try This</p>
+        <p id="out-tip" class="text-sm sm:text-base font-medium"></p>
+      </div>
+    </div>
+
+    <div class="fade-up fade-up-4 mt-4 flex flex-col sm:flex-row sm:items-center gap-3">
+      <button id="copy-btn" class="inline-flex items-center gap-1.5 text-sm font-medium text-slate-600 hover:text-slate-900 border border-slate-300 hover:border-slate-400 rounded-lg px-3.5 py-2 transition w-fit">
+        <span id="copy-icon">📋</span> <span id="copy-label">Copy breakdown</span>
+      </button>
+    </div>
+
+    <div class="fade-up fade-up-4 mt-3 text-sm text-slate-500 bg-slate-100 border border-slate-200 rounded-xl px-4 py-3 flex items-center gap-2">
+      <span>💡</span> This breakdown isn't saved — reload the page and it's gone. Save breakdowns permanently in Poppy AI.
+    </div>
+
+    <div class="fade-up fade-up-4 mt-6 bg-white border border-slate-200 rounded-2xl p-6 sm:p-7">
+      <p class="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-4">Your Poppy Readiness Score</p>
+      <div class="grid sm:grid-cols-3 gap-4 mb-5">
+        <div>
+          <p id="score-complexity" class="text-2xl font-bold text-slate-900">—</p>
+          <p class="text-xs text-slate-500 mt-0.5">Research complexity</p>
+        </div>
+        <div>
+          <p class="text-2xl font-bold text-slate-900">1</p>
+          <p class="text-xs text-slate-500 mt-0.5">Videos analyzed today</p>
+        </div>
+        <div>
+          <p class="text-2xl font-bold text-slate-900">50+</p>
+          <p class="text-xs text-slate-500 mt-0.5">Competitors you probably want to check</p>
+        </div>
+      </div>
+      <p class="text-slate-700 text-sm mb-4">
+        Analyzing one video by hand is easy. Analyzing your entire competitor set — and your own back catalog, side by side — is what actually reveals your winning pattern. That's what Poppy AI is built for.
+      </p>
+      <a href="https://getpoppy.ai" target="_blank" rel="noopener"
+         class="inline-flex items-center gap-2 bg-brand-600 hover:bg-brand-700 text-white font-medium text-sm px-6 py-3 rounded-lg transition shadow-sm">
+        Analyze my whole competitor list in Poppy AI →
+      </a>
+      <p class="mt-3 text-xs text-slate-400">
+        Want to learn the system behind why these patterns work, not just run one breakdown?
+        <a href="https://room30.ai" target="_blank" rel="noopener" id="room30-link" class="underline hover:text-slate-600">Room30 teaches this in depth →</a>
+      </p>
+      <p class="mt-4">
+        <button id="reset-btn" class="text-sm text-slate-400 hover:text-slate-600 underline underline-offset-2">Start over</button>
+      </p>
+    </div>
+  </section>
+
+</main>
+
+<section id="faq" class="max-w-5xl mx-auto px-4 sm:px-6 py-16 w-full">
+  <h2 class="text-lg font-semibold text-slate-900 mb-5">FAQ</h2>
+  <div class="space-y-2" id="faq-list">
+    <div class="faq-item border border-slate-200 rounded-xl bg-white">
+      <button class="faq-q w-full text-left px-4 py-3.5 flex items-center justify-between text-sm font-medium text-slate-900">
+        Does this work on any platform?
+        <span class="faq-icon text-slate-400 transition-transform">＋</span>
+      </button>
+      <div class="faq-a hidden px-4 pb-3.5 text-sm text-slate-600">
+        Yes — paste captions or a transcript from YouTube, TikTok, Instagram, or anywhere else. The analysis works from the text itself, not the platform.
+      </div>
+    </div>
+    <div class="faq-item border border-slate-200 rounded-xl bg-white">
+      <button class="faq-q w-full text-left px-4 py-3.5 flex items-center justify-between text-sm font-medium text-slate-900">
+        Why do I need to paste the transcript instead of just the link?
+        <span class="faq-icon text-slate-400 transition-transform">＋</span>
+      </button>
+      <div class="faq-a hidden px-4 pb-3.5 text-sm text-slate-600">
+        Browsers can't pull captions directly from video platforms. Pasting the transcript gives an accurate, text-grounded breakdown instead of a guess.
+      </div>
+    </div>
+    <div class="faq-item border border-slate-200 rounded-xl bg-white">
+      <button class="faq-q w-full text-left px-4 py-3.5 flex items-center justify-between text-sm font-medium text-slate-900">
+        Can I analyze my own video instead of a competitor's?
+        <span class="faq-icon text-slate-400 transition-transform">＋</span>
+      </button>
+      <div class="faq-a hidden px-4 pb-3.5 text-sm text-slate-600">
+        Yes — paste your own script or transcript the same way to see how it structurally holds up.
+      </div>
+    </div>
+    <div class="faq-item border border-slate-200 rounded-xl bg-white">
+      <button class="faq-q w-full text-left px-4 py-3.5 flex items-center justify-between text-sm font-medium text-slate-900">
+        Is this the same as Poppy AI?
+        <span class="faq-icon text-slate-400 transition-transform">＋</span>
+      </button>
+      <div class="faq-a hidden px-4 pb-3.5 text-sm text-slate-600">
+        No — this is a free single-video tool. Poppy AI analyzes your entire competitor set and your own back catalog together, and remembers everything across sessions.
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer class="border-t border-slate-200 py-6">
+  <p class="max-w-5xl mx-auto px-4 sm:px-6 text-xs text-slate-400">
+    Free tool by Poppy AI. One analysis per visit — no account needed.
+  </p>
+</footer>
+
+<script>
+(function () {
+  const form = document.getElementById('analyze-form');
+  const videoUrlEl = document.getElementById('videoUrl');
+  const transcriptEl = document.getElementById('transcript');
+  const inputError = document.getElementById('input-error');
+  const submitBtn = document.getElementById('submit-btn');
+  const btnText = document.getElementById('btn-text');
+  const formCard = document.getElementById('form-card');
+  const loadingSection = document.getElementById('loading-section');
+  const loadingStatus = document.getElementById('loading-status');
+  const errorSection = document.getElementById('error-section');
+  const resultsSection = document.getElementById('results-section');
+  const resetBtn = document.getElementById('reset-btn');
+  const copyBtn = document.getElementById('copy-btn');
+  const copyLabel = document.getElementById('copy-label');
+  const bridgeLink = document.querySelector('a[href="https://getpoppy.ai"]');
+
+  // Vendor-agnostic event tracker — logs locally and forwards to
+  // window.gtag / window.dataLayer if the page has analytics installed.
+  // Swap this for your real analytics call when wiring up tracking.
+  function trackEvent(name, data) {
+    console.log('[event]', name, data || {});
+    if (typeof window.gtag === 'function') window.gtag('event', name, data || {});
+    if (Array.isArray(window.dataLayer)) window.dataLayer.push({ event: name, ...data });
+  }
+
+  let lastResultData = null;
+
+  const loadingMessages = [
+    'Reading the hook…',
+    'Mapping the structure…',
+    'Finding pattern interrupts…',
+    'Checking the CTA…'
+  ];
+
+  function setLoadingCycle() {
+    let i = 0;
+    loadingStatus.textContent = loadingMessages[0];
+    return setInterval(() => {
+      i = (i + 1) % loadingMessages.length;
+      loadingStatus.textContent = loadingMessages[i];
+    }, 1100);
+  }
+
+  function extractJson(text) {
+    const cleaned = text.trim().replace(/^```json\s*/i, '').replace(/^```\s*/, '').replace(/```\s*$/, '');
+    return JSON.parse(cleaned);
+  }
+
+  function fillList(container, items) {
+    container.innerHTML = '';
+    items.forEach(item => {
+      const li = document.createElement('li');
+      li.className = 'text-sm';
+      li.innerHTML = `<span class="font-medium text-slate-900">${item.moment}</span> — <span class="text-slate-600">${item.why}</span>`;
+      container.appendChild(li);
+    });
+  }
+
+  function renderResults(data, wordCount) {
+    lastResultData = data;
+    document.getElementById('out-hook-label').textContent = data.hookStyle.label;
+    document.getElementById('out-hook-why').textContent = data.hookStyle.why;
+    document.getElementById('out-cta-placement').textContent = data.ctaAnalysis.placement;
+    document.getElementById('out-cta-strength').textContent = data.ctaAnalysis.strength;
+    fillList(document.getElementById('out-interrupts'), data.patternInterrupts);
+    document.getElementById('out-struct-intro').textContent = data.structure.intro;
+    document.getElementById('out-struct-body').textContent = data.structure.body;
+    document.getElementById('out-struct-close').textContent = data.structure.close;
+    document.getElementById('out-pacing').textContent = data.pacingNotes;
+    document.getElementById('out-tip').textContent = data.actionableTip;
+
+    const complexity = Math.min(10, Math.max(3, Math.round(wordCount / 25)));
+    document.getElementById('score-complexity').textContent = complexity + '/10';
+
+    resultsSection.classList.remove('hidden');
+    resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    trackEvent('tool_completed', { wordCount });
+  }
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    inputError.classList.add('hidden');
+    errorSection.classList.add('hidden');
+
+    const transcript = transcriptEl.value.trim();
+    const videoUrl = videoUrlEl.value.trim();
+
+    if (transcript.split(/\s+/).filter(Boolean).length < 15) {
+      inputError.textContent = 'Paste at least a few sentences (15+ words) for an accurate breakdown.';
+      inputError.classList.remove('hidden');
+      return;
+    }
+
+    trackEvent('tool_started', { wordCount: transcript.split(/\s+/).filter(Boolean).length });
+
+    submitBtn.disabled = true;
+    btnText.textContent = 'Analyzing…';
+    formCard.classList.add('hidden');
+    loadingSection.classList.remove('hidden');
+    const loadTimer = setLoadingCycle();
+
+    // NOTE: replace with your deployed Cloudflare Worker URL, e.g.
+    // https://viral-script-analyzer-proxy.yoursubdomain.workers.dev
+    const WORKER_URL = 'https://YOUR-WORKER-URL.workers.dev';
+
+    try {
+      const res = await fetch(WORKER_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-6',
+          max_tokens: 1000,
+          system: 'You are a short-form video structure analyst. You will be given a transcript or opening lines from a video, and optionally a URL for context only. Analyze ONLY the literal text provided — do not invent claims about visuals, audio, or exact timing you cannot infer from the words themselves. Respond with STRICT JSON ONLY. No markdown fences, no preamble, no trailing commentary. Match this exact schema: {"hookStyle":{"label":string,"why":string},"patternInterrupts":[{"moment":string,"why":string}],"ctaAnalysis":{"placement":string,"strength":string},"structure":{"intro":string,"body":string,"close":string},"pacingNotes":string,"actionableTip":string}. patternInterrupts must have 2-3 items. Keep every string field under 22 words.',
+          messages: [{
+            role: 'user',
+            content: `Video context (optional, may be blank): ${videoUrl}\n\nTranscript / opening lines to analyze:\n${transcript}`
+          }]
+        })
+      });
+
+      if (!res.ok) throw new Error('API error');
+      const data = await res.json();
+      const textBlock = (data.content || []).find(b => b.type === 'text');
+      if (!textBlock) throw new Error('No text in response');
+      const parsed = extractJson(textBlock.text);
+
+      clearInterval(loadTimer);
+      loadingSection.classList.add('hidden');
+      renderResults(parsed, transcript.split(/\s+/).filter(Boolean).length);
+    } catch (err) {
+      clearInterval(loadTimer);
+      loadingSection.classList.add('hidden');
+      errorSection.classList.remove('hidden');
+      formCard.classList.remove('hidden');
+      submitBtn.disabled = false;
+      btnText.textContent = 'Analyze This Video — Free';
+    }
+  });
+
+  resetBtn.addEventListener('click', () => window.location.reload());
+
+  if (bridgeLink) {
+    bridgeLink.addEventListener('click', () => trackEvent('bridge_clicked', { target: 'poppy' }));
+  }
+
+  const room30Link = document.getElementById('room30-link');
+  if (room30Link) {
+    room30Link.addEventListener('click', () => trackEvent('bridge_clicked', { target: 'room30' }));
+  }
+
+  copyBtn.addEventListener('click', async () => {
+    if (!lastResultData) return;
+    const d = lastResultData;
+    const text = [
+      `Hook Style: ${d.hookStyle.label} — ${d.hookStyle.why}`,
+      `CTA: ${d.ctaAnalysis.placement} — ${d.ctaAnalysis.strength}`,
+      `Pattern Interrupts:`,
+      ...d.patternInterrupts.map(p => `  - ${p.moment} — ${p.why}`),
+      `Structure — Intro: ${d.structure.intro} | Body: ${d.structure.body} | Close: ${d.structure.close}`,
+      `Pacing: ${d.pacingNotes}`,
+      `Try This: ${d.actionableTip}`,
+      ``,
+      `Analyzed with Viral Script Analyzer (free) — getpoppy.ai`
+    ].join('\n');
+
+    try {
+      await navigator.clipboard.writeText(text);
+      copyLabel.textContent = 'Copied!';
+      trackEvent('analysis_copied', {});
+      setTimeout(() => { copyLabel.textContent = 'Copy breakdown'; }, 2000);
+    } catch (err) {
+      copyLabel.textContent = 'Copy failed';
+      setTimeout(() => { copyLabel.textContent = 'Copy breakdown'; }, 2000);
+    }
+  });
+
+  document.querySelectorAll('.faq-item').forEach(item => {
+    const btn = item.querySelector('.faq-q');
+    const answer = item.querySelector('.faq-a');
+    const icon = item.querySelector('.faq-icon');
+    btn.addEventListener('click', () => {
+      const isOpen = !answer.classList.contains('hidden');
+      answer.classList.toggle('hidden');
+      icon.textContent = isOpen ? '＋' : '－';
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
