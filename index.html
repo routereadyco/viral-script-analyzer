@@ -183,37 +183,51 @@
       <span>💡</span> This breakdown isn't saved — reload the page and it's gone. Save breakdowns permanently in Poppy AI.
     </div>
 
+    <div class="fade-up fade-up-4 mt-4 bg-slate-100 border border-slate-200 rounded-2xl p-5 sm:p-6">
+      <p class="text-sm font-medium text-slate-900 mb-1">Want to be first to know when new free AI tools launch?</p>
+      <p class="text-xs text-slate-500 mb-3">Get notified whenever a new creator-focused AI tool goes live.</p>
+      <form id="email-form" class="flex flex-col sm:flex-row gap-2">
+        <input
+          id="email-input" name="email" type="email" placeholder="you@email.com"
+          class="flex-1 rounded-lg border border-slate-300 px-3.5 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-brand-500 focus:border-transparent transition"
+        >
+        <button type="submit" id="email-submit-btn"
+          class="inline-flex items-center justify-center bg-slate-900 hover:bg-slate-800 text-white font-medium text-sm px-5 py-2.5 rounded-lg transition disabled:opacity-60 disabled:cursor-not-allowed">
+          <span id="email-btn-text">Notify Me</span>
+        </button>
+      </form>
+      <p class="mt-2 text-xs text-slate-400">Optional. No spam.</p>
+      <p id="email-status" class="hidden mt-2 text-sm"></p>
+    </div>
+
     <div class="fade-up fade-up-4 mt-6 bg-white border border-slate-200 rounded-2xl p-6 sm:p-7">
-      <p class="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-4">Your Poppy Readiness Score</p>
-      <div class="grid sm:grid-cols-3 gap-4 mb-5">
-        <div>
-          <p id="score-complexity" class="text-2xl font-bold text-slate-900">—</p>
-          <p class="text-xs text-slate-500 mt-0.5">Research complexity</p>
+      <p class="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-2">What's Next?</p>
+      <p class="text-sm text-slate-600 mb-5">
+        These are the tools and systems we personally use and recommend. We're currently finalizing our partner integrations. Check back soon.
+      </p>
+      <div class="grid sm:grid-cols-2 gap-4">
+        <div class="border border-slate-200 rounded-xl p-5 flex flex-col">
+          <p class="font-semibold text-slate-900">Poppy AI</p>
+          <p class="text-sm text-slate-600 mt-1.5 flex-1">Analyze your entire competitor library instead of one video at a time.</p>
+          <button type="button" disabled
+            class="mt-4 inline-flex items-center justify-center bg-slate-100 text-slate-400 text-sm font-medium px-4 py-2.5 rounded-lg cursor-not-allowed w-fit">
+            Coming Soon
+          </button>
         </div>
-        <div>
-          <p class="text-2xl font-bold text-slate-900">1</p>
-          <p class="text-xs text-slate-500 mt-0.5">Videos analyzed today</p>
-        </div>
-        <div>
-          <p class="text-2xl font-bold text-slate-900">50+</p>
-          <p class="text-xs text-slate-500 mt-0.5">Competitors you probably want to check</p>
+        <div class="border border-slate-200 rounded-xl p-5 flex flex-col">
+          <p class="font-semibold text-slate-900">Room30</p>
+          <p class="text-sm text-slate-600 mt-1.5 flex-1">Learn how to build AI-powered businesses, apps, and systems.</p>
+          <button type="button" disabled
+            class="mt-4 inline-flex items-center justify-center bg-slate-100 text-slate-400 text-sm font-medium px-4 py-2.5 rounded-lg cursor-not-allowed w-fit">
+            Coming Soon
+          </button>
         </div>
       </div>
-      <p class="text-slate-700 text-sm mb-4">
-        Analyzing one video by hand is easy. Analyzing your entire competitor set — and your own back catalog, side by side — is what actually reveals your winning pattern. That's what Poppy AI is built for.
-      </p>
-      <a href="https://getpoppy.ai" target="_blank" rel="noopener"
-         class="inline-flex items-center gap-2 bg-brand-600 hover:bg-brand-700 text-white font-medium text-sm px-6 py-3 rounded-lg transition shadow-sm">
-        Analyze my whole competitor list in Poppy AI →
-      </a>
-      <p class="mt-3 text-xs text-slate-400">
-        Want to learn the system behind why these patterns work, not just run one breakdown?
-        <a href="https://room30.ai" target="_blank" rel="noopener" id="room30-link" class="underline hover:text-slate-600">Room30 teaches this in depth →</a>
-      </p>
-      <p class="mt-4">
-        <button id="reset-btn" class="text-sm text-slate-400 hover:text-slate-600 underline underline-offset-2">Start over</button>
-      </p>
     </div>
+
+    <p class="mt-4">
+      <button id="reset-btn" class="text-sm text-slate-400 hover:text-slate-600 underline underline-offset-2">Start over</button>
+    </p>
   </section>
 
 </main>
@@ -339,9 +353,6 @@
     document.getElementById('out-pacing').textContent = data.pacingNotes;
     document.getElementById('out-tip').textContent = data.actionableTip;
 
-    const complexity = Math.min(10, Math.max(3, Math.round(wordCount / 25)));
-    document.getElementById('score-complexity').textContent = complexity + '/10';
-
     resultsSection.classList.remove('hidden');
     resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
     trackEvent('tool_completed', { wordCount });
@@ -371,7 +382,7 @@
 
     // NOTE: replace with your deployed Cloudflare Worker URL, e.g.
     // https://viral-script-analyzer-proxy.yoursubdomain.workers.dev
-    const WORKER_URL = 'https://blue-surf-049d.5cr7ztpryz.workers.dev';
+    const WORKER_URL = 'https://YOUR-WORKER-URL.workers.dev';
 
     try {
       const res = await fetch(WORKER_URL, {
@@ -443,6 +454,48 @@
       setTimeout(() => { copyLabel.textContent = 'Copy breakdown'; }, 2000);
     }
   });
+
+  const emailForm = document.getElementById('email-form');
+  const emailInput = document.getElementById('email-input');
+  const emailStatus = document.getElementById('email-status');
+  const emailSubmitBtn = document.getElementById('email-submit-btn');
+  const emailBtnText = document.getElementById('email-btn-text');
+
+  if (emailForm) {
+    emailForm.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = emailInput.value.trim();
+      if (!email) return;
+
+      emailSubmitBtn.disabled = true;
+      emailBtnText.textContent = 'Sending…';
+      emailStatus.classList.add('hidden');
+
+      try {
+        const res = await fetch('https://formspree.io/f/XXXXXXXX', {
+          method: 'POST',
+          headers: { 'Accept': 'application/json' },
+          body: new FormData(emailForm)
+        });
+
+        if (res.ok) {
+          emailStatus.textContent = "You're in — we'll let you know when the next tool drops.";
+          emailStatus.className = 'mt-2 text-sm text-emerald-600';
+          emailInput.value = '';
+          trackEvent('email_captured', {});
+        } else {
+          throw new Error('Formspree error');
+        }
+      } catch (err) {
+        emailStatus.textContent = 'Something went wrong — please try again.';
+        emailStatus.className = 'mt-2 text-sm text-rose-600';
+      } finally {
+        emailStatus.classList.remove('hidden');
+        emailSubmitBtn.disabled = false;
+        emailBtnText.textContent = 'Notify Me';
+      }
+    });
+  }
 
   document.querySelectorAll('.faq-item').forEach(item => {
     const btn = item.querySelector('.faq-q');
